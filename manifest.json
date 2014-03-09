@@ -1,0 +1,14 @@
+{
+	"name": "Javascript Batch",
+	"version": "1",
+	"manifest_version": 2,
+	"description": "Javascript Batch.",
+	"icons": { "128": "icon_128.png" },
+	"permissions": ["http://*/*", "https://*/*","storage"],
+	"commands": {""},
+	"app": {
+		"launch": {
+		  "local_path": "main.html"
+		}
+	}
+}
