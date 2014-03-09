@@ -5,7 +5,6 @@
 	"description": "Javascript Batch.",
 	"icons": { "128": "icon_128.png" },
 	"permissions": ["http://*/*", "https://*/*","storage"],
-	"commands": {""},
 	"app": {
 		"launch": {
 		  "local_path": "main.html"

@@ -5,14 +5,29 @@ var RUNTIME = new function(){
 	var fn = {
 		run:function(){
 			if(taskList[taskIndex]){
-				taskList[taskIndex].method(function(code,error){
-					if(code){
-						taskIndex++;
-						fn.run();
-					}else{
-						alert(error);
-					}
-				});
+				taskList[taskIndex].method(
+					function(code,response){
+						if(code){
+							var test = taskList[taskIndex].test?JSON.parse(taskList[taskIndex].test):null
+							if(test){
+								if(typeof response == 'string'){
+									var reg = new RegExp(test);
+									if(!reg.test(response)){
+										alert('Response Not Match');
+										return;
+									}
+								}else if(typeof response == 'object'){
+									
+								}
+							}
+							taskIndex++;
+							fn.run();
+						}else{
+							alert(response);
+						}
+					},
+					taskList[taskIndex].params?JSON.parse(taskList[taskIndex].params):null
+				);
 			}
 		},
 		append:function(method,params,test){
@@ -22,7 +37,7 @@ var RUNTIME = new function(){
 	
 	return fn;
 }
-
+//eval('alert("asdf")');
 
 $(function(){
 
