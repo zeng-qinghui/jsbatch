@@ -1,65 +1,87 @@
 <html>
 <head>
+<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="./codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-	
-<div id="panel">
-	<div>
-		<button class="clearLogButton">Clear Log</button>
-	</div>
-	<div id="logContain">
-		
-	</div>
-	<div id="monitor">
-		
+<header class="navbar navbar-inverse  navbar-static-top" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/main.html" class="navbar-brand">JsBatch</a>
+    </div>
+    <nav class="collapse navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li class="active">
+          <a href="#">Home</a>
+        </li>
+      </ul>
+      <ul id="taskgroup" class="nav navbar-nav navbar-right">
+		<li><select id="taskGroupSelect" class="form-control" style="margin-top: 8px;"> </select></li>
+        <li><a class="deleteGroup" href="#">Delete</a></li>
+        <li><a class="addGroup" href="#">Add</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="col-md-1">
+	<div id="controlGroup" class="hidden-print affix" role="complementary">
+		<button class="runButton btn btn-primary" title="Run"><span class="glyphicon glyphicon-play"></span></button><br/>
+		<button class="continueButton btn btn-primary" title="Again"><span class="glyphicon glyphicon-play-circle"></span></button><br/>
+		<button class="skipButton btn btn-primary" title="Skip"><span class="glyphicon glyphicon-share-alt"></span></button><br/>
+		<button class="clearButton btn btn-primary" title="Clear"><span class="glyphicon glyphicon-eject"></span></button><br/>
 	</div>
 </div>
+<div class="container">
+	<div class="col-md-12">
+		<div id="panel" class="row">
+			<div class="col-md-8">
+				<h3>Log</h3>
+				<div id="logContain">
+					
+				</div>
+			</div>
+			<div class="col-md-4">
+				<h3>Runtime</h3>
+				<div id="monitor">
+					
+				</div>
+			</div>
+		</div>
 
-
-
-<div id="datatable">
-	<div id="taskgroup">
-		<select id="taskGroupSelect"> </select>
-		<button class="deleteGroup">Delete</button>
-		<button class="addGroup">Add</button>
+		<div id="datatable">
+			<h3>Task List</h3>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr class="row">
+						<th>Sort</th>
+						<th>Name</th>
+						<th>Method</th>
+						<th>Params</th>
+						<th>Test</th>
+						<th>Operate</th>
+					</tr>
+				</thead>
+				<tbody id="tastlist">
+				</tbody>
+				<tfoot>
+					<tr class="row">
+						<td class="col-xs-1"><input class="form-control" id="insert_sort" type="text" /></td>
+						<td class="col-xs-2"><input class="form-control" id="insert_name" type="text" /></td>
+						<td class="col-xs-2">
+							<select id="insert_method" class="form-control">
+							</select>
+						</td>
+						<td class="col-xs-3"><textarea id="insert_params" class="json"></textarea></td>
+						<td class="col-xs-3"><textarea id="insert_test" class="jscode"></textarea></td>
+						<td class="col-xs-1"><button class="addTaskButton btn btn-primary">Add</button></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 	</div>
-	<div id="controlGroup">
-		<button class="runButton">Run</button>
-		<button class="continueButton">Continue</button>
-		<button class="skipButton">Skip And Run</button>
-		<button class="clearButton">Clear</button>
-	</div>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>Sort</th>
-				<th>Name</th>
-				<th>Method</th>
-				<th>Params</th>
-				<th>Test</th>
-				<th>Operate</th>
-			</tr>
-		</thead>
-		<tbody id="tastlist">
-		</tbody>
-		<tfoot>
-			<tr>
-				<td><input id="insert_sort" type="text" /></td>
-				<td><input id="insert_name" type="text" /></td>
-				<td>
-					<select id="insert_method">
-					</select>
-				</td>
-				<td><textarea id="insert_params" class="json"></textarea></td>
-				<td><textarea id="insert_test" class="jscode"></textarea></td>
-				<td><button class="addTaskButton">Add</button></td>
-			</tr>
-		</tfoot>
-	</table>
 </div>
-
 
 
 <script src="./codemirror/lib/codemirror.js"></script>
@@ -68,6 +90,7 @@
 <script src="./codemirror/addon/comment/comment.js"></script>
 <script src="./codemirror/mode/javascript/javascript.js"></script>
 <script type="text/javascript" src="./lib/jquery.js"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./lib/log.js"></script>
 <script type="text/javascript" src="./lib/runtime.js"></script>
 <script type="text/javascript" src="./lib/methods.js"></script>

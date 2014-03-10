@@ -25,17 +25,13 @@
 }
 
 #monitor{
-	float:left;
 	height:200px;
-	width:49%;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #logContain{
-	float:left;
 	height:200px;
-	width:49%;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #datatable{
@@ -45,7 +41,6 @@
 
 #monitor li{
 	font-size:12px;
-	text-indent: -10px;
 }
 
 #monitor li.ok{
@@ -67,4 +62,10 @@
 #monitor li.error{
 	font-size:10px;
 	color:#800;
+}
+#controlGroup{
+	margin-top:70px;
+}
+#controlGroup button{
+	margin-bottom:3px;
 }

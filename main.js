@@ -45,6 +45,8 @@ $(function(){
 				readOnly:false
 		});
 		
+		$('tfoot .CodeMirror-wrap').addClass('form-control');
+		
 		for(var method in METHODS){
 			$('#insert_method').append('<option value="'+method+'">'+method+'</option>');
 		}
@@ -145,7 +147,7 @@ $(function(){
                      	var sort = parseFloat(result.rows.item(i)['sort']);
                      	maxSort = maxSort<sort?sort:maxSort;
 						$('#tastlist').append(
-							'<tr>'+
+							'<tr class="row">'+
 							'<td name="sort">' + result.rows.item(i)['sort'] + '</td>'+
 							'<td name="name">' + result.rows.item(i)['name'] + '</td>'+
 							'<td name="method">' + result.rows.item(i)['method'] + '</td>'+
@@ -155,7 +157,7 @@ $(function(){
 							'<td>'+
 							'	<textarea  name="test" class="jscode">' + result.rows.item(i)['test'] + '</textarea>'+
 							'</td>'+
-							'<td><button class="deleteTaskButton" tast-id="' + result.rows.item(i)['id'] + '">Delete</button></td>'+
+							'<td><button class="deleteTaskButton btn btn-primary" tast-id="' + result.rows.item(i)['id'] + '">Delete</button></td>'+
 							'</tr>'
 						);
                      }
