@@ -14,10 +14,11 @@ $(function(){
 			sort:null,
 			name:null,
 			method:null,
+			url:null,
 			params:null,
 			test:null,
 		},
-		taskGroup:'default'
+		taskGroup:'Default'
 	};
 	
 	init.init = function(callback){
@@ -26,6 +27,7 @@ $(function(){
 		if(!G.addInput.sort)  G.addInput.sort = $('#insert_sort');
 		if(!G.addInput.name)  G.addInput.name = $('#insert_name');
 		if(!G.addInput.method) G.addInput.method = $('#insert_method');
+		if(!G.addInput.url) G.addInput.url = $('#insert_url');
 		if(!G.addInput.params) G.addInput.params = CodeMirror.fromTextArea($('#insert_params')[0], {
 				matchBrackets: true,
 				autoCloseBrackets: true,
@@ -58,8 +60,7 @@ $(function(){
 	init.initDatabase = function(callback){
 		if(!G.db){G.db = openDatabase('jsbatch','2.3.4','Jsbatch Database',102400);};
 		G.db.transaction(function(tx){
-			//tx.executeSql('DROP TABLE tasts');
-			tx.executeSql('CREATE TABLE IF NOT EXISTS tasks_' + G.taskGroup + '(id integer4 PRIMARY KEY,sort float,name TEXT,method TEXT,params TEXT,test TEXT)',[]);
+			tx.executeSql('CREATE TABLE IF NOT EXISTS tasks_' + G.taskGroup + '(id integer4 PRIMARY KEY,sort float,name TEXT,method TEXT,url TEXT,params TEXT,test TEXT)',[]);
 			if(callback){callback(true);}
 		});
 	};
@@ -67,7 +68,6 @@ $(function(){
 	
 	init.initGroup = function(callback){
 		G.db.transaction(function(tx){
-			//tx.executeSql('DROP TABLE tasts');
 			tx.executeSql('SELECT name FROM sqlite_master WHERE type="table" AND name LIKE "tasks_%"',[],
 				function (tx, result) {
 					 $('#taskGroupSelect').html('');
@@ -91,7 +91,7 @@ $(function(){
 						var deleteGroup = $('#taskGroupSelect').val();
 						$('#taskGroupSelect option:selected').remove();
 						if($('#taskGroupSelect option').length==0){
-							$('#taskGroupSelect').append('<option value="default">default</tr>');
+							$('#taskGroupSelect').append('<option value="Default">Default</tr>');
 						}
 						$('#taskGroupSelect').val($('#taskGroupSelect option:first').attr('value'));
 						$('#taskGroupSelect').change();
@@ -151,6 +151,7 @@ $(function(){
 							'<td name="sort">' + result.rows.item(i)['sort'] + '</td>'+
 							'<td name="name">' + result.rows.item(i)['name'] + '</td>'+
 							'<td name="method">' + result.rows.item(i)['method'] + '</td>'+
+							'<td name="url">' + result.rows.item(i)['url'] + '</td>'+
 							'<td>'+
 							'	<textarea  name="params" class="json">' + result.rows.item(i)['params'] + '</textarea>'+
 							'</td>'+
@@ -176,12 +177,13 @@ $(function(){
 		$('.addTaskButton').click(function(){
 			G.db.transaction(function (tx) {
 				 tx.executeSql(
-					'INSERT INTO tasks_' + G.taskGroup + '(id,sort,name,method,params,test) VALUES(?,?,?,?,?,?)', 
+					'INSERT INTO tasks_' + G.taskGroup + '(id,sort,name,method,url,params,test) VALUES(?,?,?,?,?,?,?)', 
 					[
 						Date.parse( new Date())*100+Math.ceil(Math.random()*90000 + 10000),
 						G.addInput.sort.val(),
 						G.addInput.name.val(),
 						G.addInput.method.val(),
+						G.addInput.url.val(),
 						G.addInput.params.getValue(),
 						G.addInput.test.getValue()
 					],
@@ -193,7 +195,8 @@ $(function(){
 						});
 						G.addInput.sort.val(Math.ceil(maxSort)+1);
 						G.addInput.name.val("");
-						G.addInput.params.setValue("");
+						G.addInput.url.val("");
+						G.addInput.params.setValue("{}");
 						G.addInput.test.setValue("");
 						init.initTasktable(function(){
 							init.initEditer();
@@ -228,9 +231,10 @@ $(function(){
 			$('tbody tr').each(function(i,obj){
 				var name = $(obj).find('td[name="name"]').text();
 				var method = $(obj).find('td[name="method"]').text();
-				var params = $(obj).find('textarea[name="params"]').text();
+				var url = $(obj).find('td[name="url"]').text();
+				var params = JSON.parse($(obj).find('textarea[name="params"]').text());
 				var test = $(obj).find('textarea[name="test"]').text();
-				RUNTIME.append(METHODS[method],params,test,name);
+				RUNTIME.append(METHODS[method],JSON.stringify([url,params]),test,name);
 			});
 			LOG.clear();
 			RUNTIME.run();
@@ -252,12 +256,15 @@ $(function(){
 	};
 	
 	init.init();
-	RUNTIME.append(init.initDatabase,null,null,'');
-	RUNTIME.append(init.initGroup,null,null,'');
-	RUNTIME.append(init.initTasktable,null,null,'');
-	RUNTIME.append(init.initEditer,null,null,'');
-	RUNTIME.append(init.initEvent,null,null,'');
-	RUNTIME.run();
+	init.initDatabase(function(){
+		init.initGroup(function(){
+			init.initTasktable(function(){
+				init.initEditer(function(){
+					init.initEvent();
+				});
+			});
+		});
+	});
 });
 
 
