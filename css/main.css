@@ -1,3 +1,4 @@
+
 .CodeMirror {
   border: 1px solid #eee;
   height: auto;
@@ -5,4 +6,65 @@
 .CodeMirror-scroll {
   overflow-y: hidden;
   overflow-x: auto;
+}
+
+.log-name{
+	font-weight: bold;
+}
+
+#logContain .ok{
+	font-weight: bold;
+	padding-left:15px;
+	color:#0F0;
+}
+
+#logContain .error{
+	font-weight: bold;
+	padding-left:15px;
+	color:#F00;
+}
+
+#monitor{
+	float:left;
+	height:200px;
+	width:49%;
+	overflow: scroll;
+}
+
+#logContain{
+	float:left;
+	height:200px;
+	width:49%;
+	overflow: scroll;
+}
+
+#datatable{
+	clear: both;
+	margin-top:15px;
+}
+
+#monitor li{
+	font-size:12px;
+	text-indent: -10px;
+}
+
+#monitor li.ok{
+	color:#080;
+}
+
+#monitor li.running{
+	color:#880;
+}
+
+#monitor li.skip{
+	text-decoration:line-through;
+}
+
+#monitor li.native{
+	font-style:italic;
+}
+
+#monitor li.error{
+	font-size:10px;
+	color:#800;
 }

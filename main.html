@@ -4,50 +4,73 @@
 <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-<table border="1">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Method</th>
-			<th>Params</th>
-			<th>Test</th>
-			<th>Operate</th>
-		</tr>
-	</thead>
-	<tbody id="tastlist">
-		<tr style="display:none;">
-			<td>Test One</td>
-			<td>GET</td>
-			<td>
-				<textarea rows="3" class="json">['http://www.baidu.com',{},null]</textarea>
-			</td>
-			<td>
-				<textarea rows="3" class="jscode">function (response){return true;}</textarea>
-			</td>
-			<td><button>Delete</button></td>
-		</tr>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td><input id="insert_name" type="text" /></td>
-			<td>
-				<select id="insert_method">
-					<option>GET</option>
-					<option>POST</option>
-				</select>
-			</td>
-			<td><textarea id="insert_params" class="json"></textarea></td>
-			<td><textarea id="insert_test" class="jscode"></textarea></td>
-			<td><button class="addTaskButton">Add</button></td>
-		</tr>
-	</tfoot>
-</table>
+	
+<div id="panel">
+	<div>
+		<button class="clearLogButton">Clear Log</button>
+	</div>
+	<div id="logContain">
+		
+	</div>
+	<div id="monitor">
+		
+	</div>
+</div>
+
+
+
+<div id="datatable">
+	<div id="taskgroup">
+		<select id="taskGroupSelect"> </select>
+		<button class="deleteGroup">Delete</button>
+		<button class="addGroup">Add</button>
+	</div>
+	<div id="controlGroup">
+		<button class="runButton">Run</button>
+		<button class="continueButton">Continue</button>
+		<button class="skipButton">Skip And Run</button>
+		<button class="clearButton">Clear</button>
+	</div>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Sort</th>
+				<th>Name</th>
+				<th>Method</th>
+				<th>Params</th>
+				<th>Test</th>
+				<th>Operate</th>
+			</tr>
+		</thead>
+		<tbody id="tastlist">
+		</tbody>
+		<tfoot>
+			<tr>
+				<td><input id="insert_sort" type="text" /></td>
+				<td><input id="insert_name" type="text" /></td>
+				<td>
+					<select id="insert_method">
+					</select>
+				</td>
+				<td><textarea id="insert_params" class="json"></textarea></td>
+				<td><textarea id="insert_test" class="jscode"></textarea></td>
+				<td><button class="addTaskButton">Add</button></td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+
+
+
 <script src="./codemirror/lib/codemirror.js"></script>
 <script src="./codemirror/addon/edit/matchbrackets.js"></script>
 <script src="./codemirror/addon/comment/continuecomment.js"></script>
 <script src="./codemirror/addon/comment/comment.js"></script>
 <script src="./codemirror/mode/javascript/javascript.js"></script>
-<script src="./lib/jquery.js"></script>
+<script type="text/javascript" src="./lib/jquery.js"></script>
+<script type="text/javascript" src="./lib/log.js"></script>
+<script type="text/javascript" src="./lib/runtime.js"></script>
+<script type="text/javascript" src="./lib/methods.js"></script>
 <script type="text/javascript" src="./main.js"></script>
 </body>
 </html>
