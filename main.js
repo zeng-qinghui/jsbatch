@@ -17,7 +17,7 @@ $(function(){
 			params:null,
 			test:null,
 		},
-		taskGroup:'test'
+		taskGroup:'default'
 	};
 	
 	init.init = function(callback){
@@ -88,6 +88,9 @@ $(function(){
 					$('.deleteGroup').click(function(){
 						var deleteGroup = $('#taskGroupSelect').val();
 						$('#taskGroupSelect option:selected').remove();
+						if($('#taskGroupSelect option').length==0){
+							$('#taskGroupSelect').append('<option value="default">default</tr>');
+						}
 						$('#taskGroupSelect').val($('#taskGroupSelect option:first').attr('value'));
 						$('#taskGroupSelect').change();
 						G.db.transaction(function (tx) {
