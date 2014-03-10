@@ -158,7 +158,7 @@ $(function(){
 							'<td>'+
 							'	<textarea  name="test" class="jscode">' + result.rows.item(i)['test'] + '</textarea>'+
 							'</td>'+
-							'<td><button class="deleteTaskButton btn btn-primary" tast-id="' + result.rows.item(i)['id'] + '">Delete</button></td>'+
+							'<td><button class="deleteTaskButton" tast-id="' + result.rows.item(i)['id'] + '" title="Delete"><span class="glyphicon glyphicon-remove"></span></button><button class="restoreTaskButton" title="Restore"><span class="glyphicon glyphicon-save"></span></button></td>'+
 							'</tr>'
 						);
                      }
@@ -238,6 +238,22 @@ $(function(){
 			});
 			LOG.clear();
 			RUNTIME.run();
+		});
+		$('tbody').on('click','.restoreTaskButton',function(){
+			obj = $(this).parents('tr');
+			var sort = $(obj).find('td[name="sort"]').text();
+			var name = $(obj).find('td[name="name"]').text();
+			var method = $(obj).find('td[name="method"]').text();
+			var url = $(obj).find('td[name="url"]').text();
+			var params = $(obj).find('textarea[name="params"]').text();
+			var test = $(obj).find('textarea[name="test"]').text();
+			
+			G.addInput.sort.val(sort);
+			G.addInput.name.val(name);
+			G.addInput.method.val(method);
+			G.addInput.url.val(url);
+			G.addInput.params.setValue(params);
+			G.addInput.test.setValue(test);
 		});
 		$('.continueButton').click(function(){
 			RUNTIME.run();
