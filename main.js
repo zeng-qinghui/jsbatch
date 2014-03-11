@@ -18,12 +18,25 @@ $(function(){
 			params:null,
 			test:null,
 		},
-		taskGroup:'Default'
+		taskGroup:'Default',
+		storageMonitor:null
 	};
 	
 	init.init = function(callback){
+		if(!G.storageMonitor){
+			G.storageMonitor = CodeMirror.fromTextArea($('#storageMonitor')[0], {
+				matchBrackets: true,
+				autoCloseBrackets: true,
+				mode: "application/ld+json",
+				lineWrapping: true,
+				tabSize:4,
+				tabindex:4,
+				readOnly:false
+			});
+			
+		}
 		RUNTIME.setMonitor($('#monitor'));
-		
+		RUNTIME.setStorageMonitor(G.storageMonitor);
 		if(!G.addInput.sort)  G.addInput.sort = $('#insert_sort');
 		if(!G.addInput.name)  G.addInput.name = $('#insert_name');
 		if(!G.addInput.method) G.addInput.method = $('#insert_method');
@@ -61,6 +74,7 @@ $(function(){
 		if(!G.db){G.db = openDatabase('jsbatch','2.3.4','Jsbatch Database',102400);};
 		G.db.transaction(function(tx){
 			tx.executeSql('CREATE TABLE IF NOT EXISTS tasks_' + G.taskGroup + '(id integer4 PRIMARY KEY,sort float,name TEXT,method TEXT,url TEXT,params TEXT,test TEXT)',[]);
+			tx.executeSql('CREATE TABLE IF NOT EXISTS storage (groupname TEXT,storage TEXT)',[]);
 			if(callback){callback(true);}
 		});
 	};
@@ -111,7 +125,8 @@ $(function(){
 						}
 					});
                      
-					 if(callback){callback(true);}
+					if(callback){callback(true);}
+					 
                  },
                  function () {
                     if(callback){callback(false,'Sql Error');}
@@ -164,8 +179,17 @@ $(function(){
                      }
                      
 					G.addInput.sort.val(Math.ceil(maxSort)+1);
-                     
-					 if(callback){callback(true);}
+                    tx.executeSql('SELECT storage FROM storage WHERE groupname="' + G.taskGroup + '"',[],
+						function (tx, result) {
+		                     for (var i = 0; i < result.rows.length; i++) {
+								G.storageMonitor.setValue(result.rows.item(i)['storage']);
+		                     }
+							 if(callback){callback(true);}
+						},function () {
+		                    if(callback){callback(false,'Sql Error');}
+		                }
+						
+					);
                  },
                  function () {
                     if(callback){callback(false,'Sql Error');}
@@ -237,7 +261,21 @@ $(function(){
 				RUNTIME.append(METHODS[method],JSON.stringify([url,params]),test,name);
 			});
 			LOG.clear();
-			RUNTIME.run();
+			G.db.transaction(function (tx) {
+				tx.executeSql('DELETE FROM storage WHERE groupname="' + G.taskGroup + '"',[],function(){
+					tx.executeSql('INSERT INTO storage(groupname,storage) VALUES(? , ?)',[ G.taskGroup, G.storageMonitor.getValue()],
+						function () {
+							 RUNTIME.applayStroage();
+							 RUNTIME.run();
+							 if(callback){callback(true);}
+						},function () {
+		                    if(callback){callback(false,'Sql Error');}
+		                }
+					);
+				},function(){
+					if(callback){callback(false,'Sql Error');}
+				});
+			});
 		});
 		$('tbody').on('click','.restoreTaskButton',function(){
 			obj = $(this).parents('tr');
